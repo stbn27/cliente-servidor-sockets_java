@@ -31,27 +31,35 @@ public class Servidor {
             System.out.println("Servidor iniciado en el puerto " + PUERTO);
             System.out.println("Esperando cliente...");
 
-            try (Socket cliente = servidor.accept();
-                 DataInputStream entrada = new DataInputStream(cliente.getInputStream());
-                 DataOutputStream salida = new DataOutputStream(cliente.getOutputStream())) {
+            try (Socket cliente = servidor.accept(); DataInputStream entrada = new DataInputStream(cliente.getInputStream()); DataOutputStream salida = new DataOutputStream(cliente.getOutputStream())) {
 
                 System.out.println("Cliente conectado");
 
                 boolean continuar = true;
 
+                // Itera hasta que el usuario cliente envie SALIR
                 while (continuar) {
+
+                    // Primer mensaje del cliente
                     String mensaje = entrada.readUTF();
 
                     System.out.println("Mensaje recibido: " + mensaje);
 
                     if (mensaje.equalsIgnoreCase("SALIR")) {
+                        // Verifica si el mensaje fue SALIR y terminar la conexion
                         String respuesta = "Conexión finalizada";
+                        
                         salida.writeUTF(respuesta);
                         System.out.println("Respuesta enviada: " + respuesta);
+                        
                         continuar = false;
                     } else {
+                        // Procesamiento del mensaje
                         String respuesta = procesarMensaje(mensaje);
+                        
+                        // Envio del mensaje al cliente
                         salida.writeUTF(respuesta);
+                        
                         System.out.println("Respuesta enviada: " + respuesta);
                     }
                 }
@@ -61,38 +69,45 @@ public class Servidor {
             System.out.println("Cliente desconectado");
 
         } catch (IOException e) {
-            System.out.println("Error en el servidor: " + e.getMessage());
+            System.err.println("ERR EN_EL_SERVIDOR - " + e.getMessage());
         }
     }
 
     /**
-     * Procesa el mensaje recibido desde el cliente.
-     * El formato esperado es:
-     * C CURP
-     * M MATRICULA
+     * Procesa el mensaje recibido desde el cliente. El formato esperado es: C
+     * CURP M MATRICULA
      *
      * @param mensaje mensaje enviado por el cliente.
      * @return respuesta procesada o código de error.
      */
     private static String procesarMensaje(String mensaje) {
 
+        // Que no se null y minimo un caracter distito de espacio
         if (mensaje == null || mensaje.trim().isEmpty()) {
             return "ERR FORMATO_INVALIDO";
         }
 
+        // Divide la cadena por uno o mas espacios
+        // [\s -> cualquier caracter de espacio; + \s tantas veces como aparesca \s]
         String[] partes = mensaje.trim().split("\\s+");
 
+        // Obligatoriamente tiene que venir la inicial + el valor (M 2203045231)
         if (partes.length != 2) {
             return "ERR FORMATO_INVALIDO";
         }
 
+        // Convertimos a mayuscula para comparar mas facilmente
         String tipo = partes[0].toUpperCase();
         String dato = partes[1].toUpperCase();
 
+        // Determinamos el tipo de solicitud
         return switch (tipo) {
-            case "C" -> procesarCurp(dato);
-            case "M" -> procesarMatricula(dato);
-            default -> "ERR TIPO_INVALIDO";
+            case "C" ->
+                procesarCurp(dato);
+            case "M" ->
+                procesarMatricula(dato);
+            default ->
+                "ERR TIPO_INVALIDO";
         };
     }
 
@@ -104,36 +119,44 @@ public class Servidor {
      */
     private static String procesarCurp(String curp) {
 
+        // Valida que no sea NULL y sean 18 caracteres
         if (curp == null || curp.length() != 18) {
             return "ERR CURP_INVALIDA";
         }
 
+        // Extraccion de la fecha de nacimiento
         String anioTexto = curp.substring(4, 6);
         String mesTexto = curp.substring(6, 8);
         String diaTexto = curp.substring(8, 10);
+        
+        // Extracción del sexo
         char sexoCaracter = curp.charAt(10);
+        
+        // Extraccion del Estado de Naciminto
         String entidadClave = curp.substring(11, 13);
 
-        if (!anioTexto.matches("\\d{2}") ||
-                !mesTexto.matches("\\d{2}") ||
-                !diaTexto.matches("\\d{2}")) {
+        // Valida que los datos extraidos del nacimiento sean digitos y una longitud de 2
+        // [\d -> cualquier digito del 0-9; {2} -> 2 repeticiones, longitud =2]
+        if (!anioTexto.matches("\\d{2}")
+                || !mesTexto.matches("\\d{2}")
+                || !diaTexto.matches("\\d{2}")) {
             return "ERR CURP_INVALIDA";
         }
 
+        // Obtener y validar el nombre del mes en texto; ejemplo: 01 -> Enero
         String mesNombre = obtenerMes(mesTexto);
-
         if (mesNombre == null) {
             return "ERR CURP_INVALIDA";
         }
 
+        // Valida que sea un dia valido
         int dia = Integer.parseInt(diaTexto);
-
         if (dia < 1 || dia > 31) {
             return "ERR CURP_INVALIDA";
         }
 
+        // Determina el sexo en formato texto
         String sexo;
-
         switch (sexoCaracter) {
             case 'H':
             case 'M':
@@ -152,14 +175,16 @@ public class Servidor {
                 return "ERR CURP_INVALIDA";
         }
 
+        // Valida que exista la entidad
         Map<String, String> entidades = obtenerEntidades();
-
         if (!entidades.containsKey(entidadClave)) {
             return "ERR ENTIDAD_INVALIDA";
         }
-
+        
+        // Obtener la entidad deferativa
         String entidad = entidades.get(entidadClave);
 
+        // Determinar el año de nacimiento
         int anioDosDigitos = Integer.parseInt(anioTexto);
         int anioActualDosDigitos = Year.now().getValue() % 100;
 
@@ -173,6 +198,7 @@ public class Servidor {
 
         String fechaNacimiento = dia + " de " + mesNombre + " de " + anioCompleto;
 
+        // Mensaje de salida para el cliente
         return "Fecha de nacimiento: " + fechaNacimiento
                 + ", Sexo: " + sexo
                 + ", Entidad federativa: " + entidad;
@@ -186,6 +212,7 @@ public class Servidor {
      */
     private static String procesarMatricula(String matricula) {
 
+        // Validar que no se NULL, longitud 10, y todos sean digitos 0-9
         if (matricula == null || matricula.length() != 10 || !matricula.matches("\\d{10}")) {
             return "ERR MATRICULA_INVALIDA";
         }
@@ -195,21 +222,23 @@ public class Servidor {
         char trimestreCaracter = matricula.charAt(3);
 
         Map<Character, String> unidades = obtenerUnidades();
-
+        // Verificar que la unidad exista
         if (!unidades.containsKey(unidadCaracter)) {
             return "ERR UNIDAD_INVALIDA";
         }
 
         Map<Character, String> trimestres = obtenerTrimestres();
-
+        // Verificar que el trimestre exista
         if (!trimestres.containsKey(trimestreCaracter)) {
             return "ERR TRIMESTRE_INVALIDO";
         }
 
+        // Determinar el año de de ingreso
         String unidad = unidades.get(unidadCaracter);
         int anioIngreso = 2000 + Integer.parseInt(anioTexto);
         String trimestre = trimestres.get(trimestreCaracter);
 
+        // Mensaje de salida para el cliente
         return "Unidad: " + unidad
                 + ", Año de ingreso: " + anioIngreso
                 + ", Trimestre: " + trimestre;
