@@ -1,7 +1,6 @@
 # Simulación de un Cliente-Servidor
 
-> Autor: Esteban Nuñez José Julian
->        Fernando
+> Autor: Esteban Nuñez José Julian & Fernando
 
 Hay dos proyectos:
 - Cliente
