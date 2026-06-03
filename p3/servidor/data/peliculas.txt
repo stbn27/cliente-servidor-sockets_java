@@ -1,0 +1,4 @@
+P001|Interestelar|B|169
+P002|Spider-Man|A|120
+P003|El Conjuro|C|112
+P004|La vida es bella|A|100

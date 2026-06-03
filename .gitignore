@@ -1,2 +1,10 @@
 .idea/
+**/.idea/**
+
 **/*.zip
+
+**/out/**
+/p3/cliente/build/
+/p3/cliente/nbproject/private/
+/p3/servidor/build/
+/p3/servidor/nbproject/private/
