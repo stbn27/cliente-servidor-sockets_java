@@ -50,8 +50,11 @@ public class ClienteSocketService {
      */
     public void conectar() throws IOException {
         socket = new Socket();
+        // Establece la conexión, estableciendo el tiempo máximo de espera.
         socket.connect(new InetSocketAddress(host, puerto), TIMEOUT_CONEXION_MS);
         socket.setSoTimeout(TIMEOUT_LECTURA_MS);
+
+        // Flujos de lectura y escritura con codificación UTF-8.
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
         writer = new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8);
     }

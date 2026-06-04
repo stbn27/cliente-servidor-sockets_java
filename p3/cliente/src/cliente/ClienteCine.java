@@ -130,13 +130,20 @@ public class ClienteCine {
         // Procesa las peticones del cliente, mientras no seleccione salir
         while (estadoActual != EstadoCliente.SALIR) {
 
-            // Menú de opciones
+            // Menú de opciones según el estado actual del cliente
             menu.mostrarMenu(estadoActual);
 
+            // Solicita el texto respectivo(Id funcion, Id asiento,...) según el estado actual
             String solicitud = menu.construirSolicitud(estadoActual);
-            salida.println("Solicitud enviada: " + solicitud);
 
+            // Envía la solicitud al servidor
             socketService.enviarMensaje(solicitud);
+
+            // Muestra la solicitud enviada al servidor
+            salida.println("Solicitud enviada: " + solicitud);
+            formateador.marcoTexto("-", false, true);
+
+            // Cambia el estado actual
             estadoActual = procesarRespuestas(socketService.recibirRespuestas(), estadoActual);
         }
     }
@@ -158,6 +165,8 @@ public class ClienteCine {
     }
 
     /**
+     * @deprecated Metodo utilizado para debuguear las respuestas del servidor<br>
+     *
      * Imprime en consola las respuestas crudas recibidas desde el servidor.
      *
      * @param respuestas respuestas emitidas por el servidor.
@@ -175,8 +184,11 @@ public class ClienteCine {
         if (!conexionEstablecida) {
             return;
         }
+
+        formateador.marcoTexto("-", true, false);
         salida.println("Cerrando conexion...");
         socketService.cerrar();
         salida.println("Conexion finalizada.");
+        formateador.marcoTexto("-", false, true);
     }
 }

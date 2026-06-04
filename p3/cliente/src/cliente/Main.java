@@ -11,6 +11,8 @@ public class Main {
      * @param args argumentos de linea de comandos.
      */
     public static void main(String[] args) {
+
+        /* Ejecuta el cliente de cine utilizando la clase principal ClienteCine. */
         ClienteCine.main(args);
     }
 }

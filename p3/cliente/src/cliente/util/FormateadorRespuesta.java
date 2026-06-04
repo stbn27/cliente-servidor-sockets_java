@@ -228,18 +228,13 @@ public class FormateadorRespuesta {
      * @return menu textual del servidor o cadena vacia si no aplica.
      */
     private String obtenerMenuServidor(EstadoCliente estadoActual) {
-        switch (estadoActual) {
-            case MENU_INICIO:
-                return MENU_SERVIDOR_INICIO;
-            case MENU_FUNCION:
-                return MENU_SERVIDOR_FUNCION;
-            case MENU_ASIENTO_BLOQUEADO:
-                return MENU_SERVIDOR_BLOQUEO;
-            case SALIR:
-                return "";
-            default:
-                return "";
-        }
+        return switch (estadoActual) {
+            case MENU_INICIO -> MENU_SERVIDOR_INICIO;
+            case MENU_FUNCION -> MENU_SERVIDOR_FUNCION;
+            case MENU_ASIENTO_BLOQUEADO -> MENU_SERVIDOR_BLOQUEO;
+            case SALIR -> "";
+            default -> "";
+        };
     }
 
     /**
@@ -278,7 +273,7 @@ public class FormateadorRespuesta {
         if (saltoInicio) {
             builder.append(System.lineSeparator());
         }
-        builder.repeat(c, LONGITUD_DECORADOR);
+        builder.append(c.repeat(LONGITUD_DECORADOR));
         if (saltoFin) {
             builder.append(System.lineSeparator());
         }

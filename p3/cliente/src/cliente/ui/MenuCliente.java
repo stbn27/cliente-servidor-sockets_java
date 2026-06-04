@@ -106,18 +106,13 @@ public class MenuCliente {
      * @return mensaje que debe enviarse al servidor.
      */
     public String construirSolicitud(EstadoCliente estadoActual) {
-        switch (estadoActual) {
-            case MENU_INICIO:
-                return construirSolicitudMenuInicio();
-            case MENU_FUNCION:
-                return construirSolicitudMenuFuncion();
-            case MENU_ASIENTO_BLOQUEADO:
-                return construirSolicitudMenuBloqueo();
-            case SALIR:
-                return "SALIR";
-            default:
-                return "SALIR";
-        }
+        return switch (estadoActual) {
+            case MENU_INICIO -> construirSolicitudMenuInicio();
+            case MENU_FUNCION -> construirSolicitudMenuFuncion();
+            case MENU_ASIENTO_BLOQUEADO -> construirSolicitudMenuBloqueo();
+            case SALIR -> "SALIR";
+            default -> "SALIR";
+        };
     }
 
     /**
@@ -127,17 +122,11 @@ public class MenuCliente {
      */
     private String construirSolicitudMenuInicio() {
         int opcion = leerOpcion(EstadoCliente.MENU_INICIO);
-        switch (opcion) {
-            case 1:
-                return "SELECCIONAR_FUNCION|" + solicitarTextoObligatorio("Ingrese el ID de la funcion: ");
-            case 2:
-                return "CAMBIAR_FECHA|" + solicitarFecha();
-            case 0:
-            case 3:
-                return "SALIR";
-            default:
-                return "SALIR";
-        }
+        return switch (opcion) {
+            case 1 -> "SELECCIONAR_FUNCION|" + solicitarTextoObligatorio("Ingrese el ID de la funcion: ");
+            case 2 -> "CAMBIAR_FECHA|" + solicitarFecha();
+            default -> "SALIR";
+        };
     }
 
     /**
@@ -147,20 +136,14 @@ public class MenuCliente {
      */
     private String construirSolicitudMenuFuncion() {
         int opcion = leerOpcion(EstadoCliente.MENU_FUNCION);
-        switch (opcion) {
-            case 1:
-                return "SELECCIONAR_ASIENTO|" + solicitarTextoObligatorio("Ingrese el asiento: ")
-                        + "|" + solicitarNombreCliente(false);
-            case 2:
-                return "CAMBIAR_FECHA|" + solicitarFecha();
-            case 3:
-                return "CAMBIAR_FUNCION";
-            case 0:
-            case 4:
-                return "SALIR";
-            default:
-                return "SALIR";
-        }
+        return switch (opcion) {
+            case 1 -> "SELECCIONAR_ASIENTO|" + solicitarTextoObligatorio("Ingrese el asiento: ")
+                    + "|" + solicitarNombreCliente(false);
+            case 2 -> "CAMBIAR_FECHA|" + solicitarFecha();
+            case 3 -> "CAMBIAR_FUNCION";
+            case 0, 4 -> "SALIR";
+            default -> "SALIR";
+        };
     }
 
     /**
@@ -170,22 +153,15 @@ public class MenuCliente {
      */
     private String construirSolicitudMenuBloqueo() {
         int opcion = leerOpcion(EstadoCliente.MENU_ASIENTO_BLOQUEADO);
-        switch (opcion) {
-            case 1:
-                return "CONFIRMAR_COMPRA";
-            case 2:
-                return "CAMBIAR_FECHA|" + solicitarFecha();
-            case 3:
-                return "CAMBIAR_ASIENTO|" + solicitarTextoObligatorio("Ingrese el nuevo asiento: ")
-                        + "|" + solicitarNombreCliente(true);
-            case 4:
-                return "VOLVER_INICIO";
-            case 0:
-            case 5:
-                return "SALIR";
-            default:
-                return "SALIR";
-        }
+        return switch (opcion) {
+            case 1 -> "CONFIRMAR_COMPRA";
+            case 2 -> "CAMBIAR_FECHA|" + solicitarFecha();
+            case 3 -> "CAMBIAR_ASIENTO|" + solicitarTextoObligatorio("Ingrese el nuevo asiento: ")
+                    + "|" + solicitarNombreCliente(true);
+            case 4 -> "VOLVER_INICIO";
+            case 0, 5 -> "SALIR";
+            default -> "SALIR";
+        };
     }
 
     /**
@@ -218,18 +194,12 @@ public class MenuCliente {
      * @return {@code true} si la opcion puede procesarse.
      */
     private boolean esOpcionValida(EstadoCliente estadoActual, int opcion) {
-        switch (estadoActual) {
-            case MENU_INICIO:
-                return opcion >= 0 && opcion <= 3;
-            case MENU_FUNCION:
-                return opcion >= 0 && opcion <= 4;
-            case MENU_ASIENTO_BLOQUEADO:
-                return opcion >= 0 && opcion <= 5;
-            case SALIR:
-                return opcion == 0;
-            default:
-                return false;
-        }
+        return switch (estadoActual) {
+            case MENU_INICIO -> opcion >= 0 && opcion <= 3;
+            case MENU_FUNCION -> opcion >= 0 && opcion <= 4;
+            case MENU_ASIENTO_BLOQUEADO -> opcion >= 0 && opcion <= 5;
+            case SALIR -> opcion == 0;
+        };
     }
 
     /**

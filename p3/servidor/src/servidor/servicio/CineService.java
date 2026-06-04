@@ -29,15 +29,24 @@ import java.util.Map;
  * Centraliza la logica del cine, el flujo guiado de la sesion y la concurrencia.
  */
 public class CineService {
+
+    /** Tiempo de bloqueo de un asiento al seleccionarlo */
     private static final int SEGUNDOS_BLOQUEO = 60;
+    /** Longitud de los decoradores en la consola */
     private static final int LONGITUD_DECORADOR = 80;
+    /** Patron de formato de la fecha y hora */
     private static final DateTimeFormatter FORMATO_HORA = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     private final ArchivoRepository repository;
+    /** Mapa de películas disponibles */
     private final Map<String, Pelicula> peliculas;
+    /** Mapa de funciones disponibles */
     private final Map<String, FuncionCine> funciones;
+    /** Mapa de asientos disponibles por funcion */
     private final Map<String, Map<String, Asiento>> asientosPorFuncion;
+
     private final List<Boleto> boletos;
+    /** Mapa de bloqueos de asientos por cliente */
     private final Map<String, BloqueoAsiento> bloqueosActivos;
     private int ultimoBoleto;
 
@@ -278,21 +287,31 @@ public class CineService {
      * @return respuestas resultantes.
      */
     private List<String> procesarSeleccionAsiento(SesionCliente sesion, String[] partes) {
+
+        // Valida que el mensaje recibido tenga la longitud correcta
         if (!Protocolo.validarLongitud(partes, 3)) {
             return List.of(RespuestaServidor.error(CodigoError.FORMATO_MENSAJE_INVALIDO));
         }
+
+        // Válida que el usuario tengra previamente una función seleccionada
         if (!sesion.tieneFuncionSeleccionada()) {
             return List.of(RespuestaServidor.error(CodigoError.FUNCION_NO_SELECCIONADA));
         }
+        // Válida que preamente se haya seleccionado el asiento
         if (sesion.getEstadoActual() == EstadoSesion.ASIENTO_BLOQUEADO) {
             return List.of(RespuestaServidor.error(CodigoError.OPCION_INVALIDA,
                     "Ya existe un asiento bloqueado. Usa CAMBIAR_ASIENTO para modificarlo."));
         }
+        // Nombre del usuario
         String nombreCliente = partes[2].trim();
+
+        // Valida que el cliente haya enviado su nombre para la reserva
         if (nombreCliente.isEmpty()) {
             return List.of(RespuestaServidor.error(CodigoError.FORMATO_MENSAJE_INVALIDO,
                     "Debes indicar un nombre de cliente al seleccionar un asiento."));
         }
+
+        // Bloquea el asiento por el tiempo definido en la variable SEGUNDOS_BLOQUEO
         return bloquearAsientoParaSesion(sesion, partes[1].trim(), nombreCliente);
     }
 
@@ -304,15 +323,29 @@ public class CineService {
      * @return respuestas resultantes.
      */
     private List<String> procesarCambioFuncion(SesionCliente sesion, String[] partes) {
+
+        // Valida la longitud del mensaje recibido
         if (!Protocolo.validarLongitud(partes, 1)) {
             return List.of(RespuestaServidor.error(CodigoError.FORMATO_MENSAJE_INVALIDO));
         }
+
+        // Válida que haya una feche seleccionado(En teoría siempre debe de ver una, ya que siempre se usa la fecha actual)
         if (sesion.getFechaSeleccionada() == null) {
             return List.of(RespuestaServidor.error(CodigoError.SESION_INVALIDA));
         }
+
+        // Libera el asiento seleccionado en caso de que haya
         liberarBloqueoDeSesion(sesion, "Cambio de funcion");
+
+        // Limpiar datos previamente registrados(funcion, fechas,...)
         sesion.limpiarFuncionSeleccionada();
+
+        // Impresión en la consola
+        marcoTexto("-");
         System.out.println("Limpieza de sesion " + sesion.getIdCliente() + ": cambio de funcion.");
+        marcoTexto("-");
+
+        // Muestra el menu de las funciones nuevamente
         return construirPantallaFunciones(sesion,
                 "Funciones disponibles para la fecha: " + sesion.getFechaSeleccionada());
     }
@@ -334,6 +367,7 @@ public class CineService {
         if (!sesion.tieneAsientoBloqueado()) {
             return List.of(RespuestaServidor.error(CodigoError.ASIENTO_NO_SELECCIONADO));
         }
+
         String nombreCliente = partes[2].trim();
         if (nombreCliente.isEmpty()) {
             return List.of(RespuestaServidor.error(CodigoError.FORMATO_MENSAJE_INVALIDO,
@@ -642,7 +676,7 @@ public class CineService {
      * @return menu textual.
      */
     private String construirMenuBloqueo() {
-        return "1. Confirmar compra\n2. Cambiar fecha\n3. Cambiar asiento\n4. Volver al inicio\n5. Salir";
+        return "\t1. Confirmar compra\n\t2. Cambiar fecha\n\t3. Cambiar asiento\n\t4. Volver al inicio\n\t5. Salir";
     }
 
     /**
