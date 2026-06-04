@@ -1,24 +1,14 @@
 # Servidor de cine (sockets + hilos)
 
+## Ejecución desde un IDE
+El código permite ejecutar desde los archivos de la raiz del paquete `servidor`
+- `servidor/Main`
+- `servidor/ServidorCine`
+
+Ambos tienen la clase `Main` con el método `main` que inicia el servidor. Al ejecutar, se inicializan los datos y se queda a la espera de conexiones.
+
 ## Requisitos
 - Java 17 (segun `nbproject/project.properties`).
-
-## Compilacion y ejecucion
-Desde `servidor/`:
-
-```bash
-javac -encoding UTF-8 -d out $(find src -name "*.java")
-```
-
-```bash
-java -cp out servidor.ServidorCine
-```
-
-Prueba local sin sockets:
-
-```bash
-java -cp out servidor.PruebaLocal
-```
 
 ## Protocolo (texto con |)
 - `LISTAR_FUNCIONES`

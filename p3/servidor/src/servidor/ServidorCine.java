@@ -28,6 +28,7 @@ public class ServidorCine {
                 System.out.println(service.generarTablaFuncionesCargadas());
                 System.out.println();
                 System.out.println("Esperando clientes...");
+
                 while (true) {
                     Socket socket = serverSocket.accept();
                     Thread hiloCliente = new Thread(new ClienteHandler(socket, service),
