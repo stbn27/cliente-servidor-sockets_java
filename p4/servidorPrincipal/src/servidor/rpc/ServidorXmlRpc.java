@@ -37,13 +37,16 @@ public final class ServidorXmlRpc {
     public void iniciar() {
         try {
             servidor = new WebServer(puerto, InetAddress.getByName(hostLocal));
+
             servidor.addHandler("Sistema", manejadorSistema);
             servidor.addHandler("RedesSociales", manejadorRedes);
             servidor.addHandler("MovilidadUrbana", manejadorMovilidad);
             servidor.addHandler("InventarioClinico", manejadorInventario);
+
             servidor.start();
         } catch (Exception excepcion) {
-            ConsolaServidor.error("SERVIDOR_PRINCIPAL",
+            ConsolaServidor.error(
+                    "SERVIDOR_PRINCIPAL",
                     "No fue posible iniciar el servidor XML-RPC: " + excepcion.getMessage()
             );
 

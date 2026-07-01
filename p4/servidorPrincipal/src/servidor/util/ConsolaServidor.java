@@ -24,7 +24,7 @@ public final class ConsolaServidor {
     }
 
     public static void error(String modulo, String texto) {
-        System.out.println("[ERROR][" + modulo + "] " + texto);
+        System.err.println("[ERROR][" + modulo + "] " + texto);
     }
 
     private static String ajustar(String texto) {

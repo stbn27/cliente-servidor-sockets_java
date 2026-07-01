@@ -34,10 +34,13 @@ public final class ConfiguracionServidor {
      * @return configuracion lista para ser usada por el servidor.
      */
     public static ConfiguracionServidor desdeSistema() {
+        // Host y puerto principal
         String hostLocal = System.getProperty("host.local", HOST_LOCAL_POR_DEFECTO);
         int puertoPrincipal = Integer.parseInt(
                 System.getProperty("puerto.principal", String.valueOf(PUERTO_PRINCIPAL_POR_DEFECTO))
         );
+
+        // Host y puerto secundario
         String hostReplica = System.getProperty("host.replica", HOST_REPLICA_POR_DEFECTO);
         int puertoReplica = Integer.parseInt(
                 System.getProperty("puerto.replica", String.valueOf(PUERTO_REPLICA_POR_DEFECTO))

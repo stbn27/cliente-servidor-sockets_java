@@ -31,11 +31,13 @@ public final class ServicioInventarioClinico {
     public ServicioInventarioClinico(RepositorioInventarioClinico repositorio,
             ClienteReplicaXmlRpc clienteReplica,
             RepositorioOperacionesPendientes repositorioPendientesHaciaReplica,
-            RepositorioOperacionesAplicadas repositorioAplicadasDesdeReplica) {
+            RepositorioOperacionesAplicadas repositorioAplicadasDesdeReplica
+    ) {
         this.repositorio = repositorio;
         this.clienteReplica = clienteReplica;
         this.repositorioPendientesHaciaReplica = repositorioPendientesHaciaReplica;
         this.repositorioAplicadasDesdeReplica = repositorioAplicadasDesdeReplica;
+
         this.sincronizador = new SincronizadorInventarioPrincipal(
                 clienteReplica,
                 repositorio,

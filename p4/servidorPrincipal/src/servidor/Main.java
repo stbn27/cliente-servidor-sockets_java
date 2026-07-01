@@ -26,11 +26,6 @@ import servidor.util.ConsolaServidor;
  * de inventario clinico se replica parcialmente hacia el servidor replica
  * para demostrar tolerancia a fallas con una politica simple y explicable.
  *
- * <p>Ejemplo de uso desde consola:
- * <pre>
- * ant run
- * ant run -Dpuerto.principal=8085 -Dhost.replica=192.168.1.50
- * </pre>
  */
 public final class Main {
 
@@ -45,10 +40,10 @@ public final class Main {
      */
     public static void main(String[] argumentos) {
 
-        // Inicializar el servidor
+        // Inicializar el parámetros para el servidor ------------------------------------------------------
         ConfiguracionServidor configuracion = ConfiguracionServidor.desdeSistema();
 
-        // Repositorios de los servicios
+        // Repositorios de los servicios -------------------------------------------------------------------
         RepositorioRedesSociales repositorioRedes = new RepositorioRedesSociales(
                 ArchivoCsvUtil.resolverRutaBase("datos/redes_sociales")
         );
@@ -59,24 +54,24 @@ public final class Main {
                 ArchivoCsvUtil.resolverRutaBase("datos/inventario_clinico")
         );
 
-        // Repositorios para las replicas pendientes
+        // Repositorios para las replicas pendientes ------------------------------------------------------
         RepositorioOperacionesPendientes repositorioPendientesHaciaReplica = new RepositorioOperacionesPendientes(
                 ArchivoCsvUtil.resolverRutaBase("datos/inventario_clinico/operaciones_pendientes_hacia_replica.csv"),
                 "INVENTARIO_CLINICO"
         );
-
+        // Operaciones ya aplicadas remotamente a ambos servidores ----------------------------------------
         RepositorioOperacionesAplicadas repositorioAplicadasDesdeReplica = new RepositorioOperacionesAplicadas(
                 ArchivoCsvUtil.resolverRutaBase("datos/inventario_clinico/operaciones_aplicadas_desde_replica.csv"),
                 "INVENTARIO_CLINICO"
         );
 
-        // Replica
+        // Servidor de replica ----------------------------------------------------------------------------
         ClienteReplicaXmlRpc clienteReplica = new ClienteReplicaXmlRpc(
                 configuracion.getHostReplica(),
                 configuracion.getPuertoReplica()
         );
 
-        // Servicios
+        // Servicios --------------------------------------------------------------------------------------
         ServicioRedesSociales servicioRedes = new ServicioRedesSociales(repositorioRedes);
         ServicioMovilidadUrbana servicioMovilidad = new ServicioMovilidadUrbana(repositorioMovilidad);
         ServicioInventarioClinico servicioInventario = new ServicioInventarioClinico(
@@ -86,7 +81,7 @@ public final class Main {
                 repositorioAplicadasDesdeReplica
         );
 
-        // Servidor RPC
+        // Inicialización del Servidor RPC ----------------------------------------------------------------
         ServidorXmlRpc servidor = new ServidorXmlRpc(
                 configuracion.getHostLocal(),
                 configuracion.getPuertoPrincipal(),
@@ -96,7 +91,7 @@ public final class Main {
                 new ManejadorInventarioClinicoRpc(servicioInventario)
         );
 
-        // Cerrar el servidor principal, se haga limpieza final y se detenga el servidor de red de maner controlada.
+        // Cierra el servidor principal, se hace limpieza final y se detiene el servidor de red de manera controlada.
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             @Override
             public void run() {
@@ -105,10 +100,10 @@ public final class Main {
             }
         }));
 
-        // Inicialización final
+        // Inicialización final -----------------------------------------------------------------------------
         servidor.iniciar();
 
-        // Logs del servidor en la consola
+        // Logs de inicialización del servidor --------------------------------------------------------------
         ConsolaServidor.titulo("Servidor principal activo");
         ConsolaServidor.info("SERVIDOR_PRINCIPAL",
                 "Host de escucha: " + configuracion.getHostLocal()
@@ -127,7 +122,9 @@ public final class Main {
                 Thread.sleep(60000L);
             } catch (InterruptedException excepcion) {
                 Thread.currentThread().interrupt();
-                ConsolaServidor.advertencia("SERVIDOR_PRINCIPAL",
+
+                ConsolaServidor.advertencia(
+                        "SERVIDOR_PRINCIPAL",
                         "Proceso interrumpido. Se iniciara el apagado."
                 );
                 break;

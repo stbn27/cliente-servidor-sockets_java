@@ -36,6 +36,7 @@ public final class ManejadorSistemaRpc {
         datos.put("hostReplica", configuracion.getHostReplica());
         datos.put("puertoReplica", configuracion.getPuertoReplica());
         datos.put("categoriaReplicada", "inventario clinico");
+
         respuesta.put("datos", datos);
 
         return respuesta;

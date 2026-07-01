@@ -7,6 +7,7 @@ import servidor.excepciones.ErrorAplicacion;
 import servidor.modelos.MedicamentoInventario;
 import servidor.modelos.ResultadoReplicacionInventario;
 import servidor.servicios.ServicioInventarioClinico;
+import servidor.util.ConsolaServidor;
 import servidor.util.RespuestaRpcUtil;
 
 /**
@@ -22,20 +23,27 @@ public final class ManejadorInventarioClinicoRpc {
         this.servicio = servicio;
     }
 
+    @SuppressWarnings("unchecked")
     public Hashtable<String, Object> consultarExistenciaMedicamento(String clave) {
         try {
+            ConsolaServidor.info(MODULO, "Consultando existencia de medicamento: " + clave);
+
             return RespuestaRpcUtil.crearRespuestaExitosa(
                     MODULO,
                     "Existencia obtenida correctamente.",
                     servicio.consultarExistenciaMedicamento(clave).toHashtable()
             );
+
         } catch (ErrorAplicacion errorAplicacion) {
+            ConsolaServidor.error(MODULO, errorAplicacion.getMessage());
+
             return RespuestaRpcUtil.crearRespuestaError(MODULO, errorAplicacion);
         } catch (Exception excepcion) {
             return RespuestaRpcUtil.crearRespuestaErrorInesperado(MODULO, excepcion);
         }
     }
 
+    @SuppressWarnings("unchecked")
     public Hashtable<String, Object> listarMedicamentosBajoMinimo() {
         try {
             List<MedicamentoInventario> medicamentos = servicio.listarMedicamentosBajoMinimo();
@@ -45,14 +53,20 @@ public final class ManejadorInventarioClinicoRpc {
                 datos.addElement(medicamento.toHashtable());
             }
 
+            ConsolaServidor.info(MODULO, "Listado de medicamentos bajo minimo generado.");
+
             return RespuestaRpcUtil.crearRespuestaExitosa(
                     MODULO,
                     "Listado de medicamentos bajo minimo generado.",
                     datos
             );
         } catch (ErrorAplicacion errorAplicacion) {
+            ConsolaServidor.error(MODULO, errorAplicacion.getMessage());
+
             return RespuestaRpcUtil.crearRespuestaError(MODULO, errorAplicacion);
         } catch (Exception excepcion) {
+            ConsolaServidor.error(MODULO, excepcion.getMessage());
+
             return RespuestaRpcUtil.crearRespuestaErrorInesperado(MODULO, excepcion);
         }
     }
@@ -62,6 +76,8 @@ public final class ManejadorInventarioClinicoRpc {
         try {
             ResultadoReplicacionInventario resultado = servicio.registrarEntradaMedicamento(clave, cantidad, responsable);
 
+            ConsolaServidor.info(MODULO, "Operacion de entrada registrada correctamente.");
+
             return RespuestaRpcUtil.crearRespuestaExitosaPersonalizada(
                     MODULO,
                     resultado.getCodigo(),
@@ -69,8 +85,12 @@ public final class ManejadorInventarioClinicoRpc {
                     resultado.toHashtable()
             );
         } catch (ErrorAplicacion errorAplicacion) {
+            ConsolaServidor.error(MODULO, errorAplicacion.getMessage());
+
             return RespuestaRpcUtil.crearRespuestaError(MODULO, errorAplicacion);
         } catch (Exception excepcion) {
+            ConsolaServidor.error(MODULO, excepcion.getMessage());
+
             return RespuestaRpcUtil.crearRespuestaErrorInesperado(MODULO, excepcion);
         }
     }
