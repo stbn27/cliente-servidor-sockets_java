@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="cliente" default="run" basedir=".">
+    <description>Compila y ejecuta el cliente de consola XML-RPC.</description>
+
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="build/classes"/>
+    <property name="dist.dir" value="dist"/>
+    <property name="jar.file" value="${dist.dir}/cliente.jar"/>
+    <property name="main.class" value="cliente.Main"/>
+    <property name="lib.xmlrpc" value="../jar/xmlrpc-1.2-b1.jar"/>
+    <property name="host.principal" value="127.0.0.1"/>
+    <property name="puerto.principal" value="8080"/>
+    <property name="host.replica" value="127.0.0.1"/>
+    <property name="puerto.replica" value="8090"/>
+
+    <path id="classpath.proyecto">
+        <pathelement location="${lib.xmlrpc}"/>
+    </path>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+
+    <target name="prepare">
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+
+    <target name="compile" depends="clean,prepare">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false"
+               source="1.8" target="1.8" encoding="UTF-8" debug="true">
+            <classpath refid="classpath.proyecto"/>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="${jar.file}" basedir="${classes.dir}" manifest="manifest.mf">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+                <attribute name="Class-Path" value="../jar/xmlrpc-1.2-b1.jar"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="compile">
+        <java classname="${main.class}" fork="true">
+            <sysproperty key="host.principal" value="${host.principal}"/>
+            <sysproperty key="puerto.principal" value="${puerto.principal}"/>
+            <sysproperty key="host.replica" value="${host.replica}"/>
+            <sysproperty key="puerto.replica" value="${puerto.replica}"/>
+            <classpath>
+                <pathelement location="${classes.dir}"/>
+                <path refid="classpath.proyecto"/>
+            </classpath>
+        </java>
+    </target>
+</project>

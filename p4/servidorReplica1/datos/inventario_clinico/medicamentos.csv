@@ -1,0 +1,11 @@
+clave|nombre|existencias|minimoRecomendado|ubicacion|proveedor
+MED-001|Paracetamol 500mg|350|60|Anaquel A1|Farmaceutica del Centro
+MED-002|Ibuprofeno 400mg|38|50|Anaquel A2|Distribuidora Medica Norte
+MED-003|Amoxicilina 500mg|72|40|Anaquel B1|Laboratorio San Gabriel
+MED-004|Suero oral 500ml|18|30|Refrigerador C1|Clinifarma Logistica
+MED-005|Omeprazol 20mg|94|45|Anaquel B3|Farmaceutica del Centro
+MED-006|Insulina rapida|22|25|Refrigerador C2|BioSalud Nacional
+MED-007|Jeringa 5ml|210|100|Almacen D1|Suministros Vitales
+MED-008|Venda elastica|47|35|Almacen D3|Suministros Vitales
+MED-009|Alcohol antiseptico|15|20|Almacen D4|Clinifarma Logistica
+MED-010|Cubrebocas quirurgico|320|150|Almacen D5|BioSalud Nacional

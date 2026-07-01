@@ -1,0 +1,11 @@
+estacion|bicicletasDisponibles|anclajesLibres|estado
+Plaza Mayor|12|8|Operativa
+Universidad Central|5|15|Operativa
+Mercado Norte|2|18|Demanda alta
+Parque del Lago|9|11|Operativa
+Hospital General|4|16|Operativa
+Terminal Sur|1|19|Rebalanceo requerido
+Museo de Arte|7|13|Operativa
+Distrito Digital|14|6|Operativa
+Jardin Botanico|3|17|Mantenimiento preventivo
+Estadio Metropolitano|10|10|Operativa
