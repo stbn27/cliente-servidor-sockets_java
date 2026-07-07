@@ -1,6 +1,6 @@
 clave|nombre|existencias|minimoRecomendado|ubicacion|proveedor
-MED-001|Paracetamol 500mg|350|60|Anaquel A1|Farmaceutica del Centro
-MED-002|Ibuprofeno 400mg|38|50|Anaquel A2|Distribuidora Medica Norte
+MED-001|Paracetamol 500mg|400|60|Anaquel A1|Farmaceutica del Centro
+MED-002|Ibuprofeno 400mg|58|50|Anaquel A2|Distribuidora Medica Norte
 MED-003|Amoxicilina 500mg|72|40|Anaquel B1|Laboratorio San Gabriel
 MED-004|Suero oral 500ml|18|30|Refrigerador C1|Clinifarma Logistica
 MED-005|Omeprazol 20mg|94|45|Anaquel B3|Farmaceutica del Centro
