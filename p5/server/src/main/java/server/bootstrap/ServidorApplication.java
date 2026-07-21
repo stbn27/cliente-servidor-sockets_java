@@ -35,11 +35,13 @@ public final class ServidorApplication {
     }
 
     public static RuntimeHandle start(ServerConfig config, boolean wait) throws Exception {
+
         System.setProperty("java.rmi.server.hostname", config.rmiHost());
         DatabaseManager database = new DatabaseManager(config.databasePath());
         Registry registry = null;
         boolean registryPropio = false;
         TableroNoticiasRemoteImpl implementacion = null;
+
         try {
             new DatabaseInitializer(database).initialize();
             AutorRepository autores = new AutorRepository();
