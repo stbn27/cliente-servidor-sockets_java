@@ -1,0 +1,46 @@
+\documentclass[11pt,letterpaper]{article}
+
+\input{project-data}
+\input{config/packages}
+\input{config/colors}
+\input{config/fonts}
+\input{config/layout}
+\input{config/toc}
+\input{config/floats}
+\input{config/code}
+\input{config/macros}
+
+\begin{document}
+
+\pagestyle{empty}
+\input{content/frontmatter/titlepage}
+\clearpage
+
+% \input{content/frontmatter/declaratoria}
+% \clearpage
+
+% \input{content/frontmatter/resumen}
+% \clearpage
+
+% \pagestyle{mainstyle}
+% \tableofcontents
+% \clearpage
+
+% \listoffigures
+% \clearpage
+
+% \listoftables
+% \clearpage
+
+\input{content/sections/Proyecto.tex}
+\input{content/sections/Ejecucion.tex}
+\input{content/sections/Reflexion.tex}
+
+\clearpage
+\input{content/backmatter/bibliografia}
+
+% \clearpage
+% \appendix
+% \input{content/backmatter/anexos}
+
+\end{document}

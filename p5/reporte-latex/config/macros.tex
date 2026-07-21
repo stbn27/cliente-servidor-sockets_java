@@ -1,0 +1,66 @@
+% ------------------------------------------------------------------
+% Macros de portada y páginas preliminares.
+% ------------------------------------------------------------------
+
+\newcommand{\DocumentSubtitle}{\DocumentType\\\ProjectMode}
+
+\newcommand{\InstitutionalLogo}{assets/branding/logo.jpg}
+\newcommand{\InstitutionalFooter}{assets/branding/footer.png}
+
+% Código en línea para archivos, rutas o identificadores largos.
+% Usa el estilo monoespaciado y permite cortes limpios sin guiones añadidos.
+\appto\UrlBreaks{\do\_\do\.\do\/\do\-}
+\newcommand{\InlineCode}[1]{%
+  \begingroup
+  \Urlmuskip=0mu plus 1mu\relax
+  \nolinkurl{#1}%
+  \endgroup
+}
+\renewcommand{\texttt}[1]{\InlineCode{#1}}
+
+\newcommand{\RenderAdvisorBlock}[4]{%
+  \begin{minipage}[t]{0.42\textwidth}
+    \centering
+    \textbf{#1}\\
+    #2\\
+    #3\\
+    #4
+  \end{minipage}
+}
+
+\newcommand{\SignatureLine}[1]{%
+  \vspace{1.1cm}
+  \begin{center}
+    \rule{0.32\textwidth}{0.4pt}\\
+    #1
+  \end{center}
+}
+
+% Marca de valor pendiente de confirmar por el autor.
+% Uso: \pordefinir{duración exacta de la carga masiva}
+\newcommand{\pordefinir}[1]{\textcolor{BrandRed}{\textit{[POR CONFIRMAR: #1]}}}
+
+% Notas
+\newcommand{\nota}[3]{%
+  \begin{tcolorbox}[
+    enhanced,
+    breakable,
+    colframe=#1!70!black,      % borde: color fuerte
+    colbacktitle=#1!80!black,  % fondo del título: color fuerte
+    colback=#1!8,              % fondo del cuerpo: color muy suave
+    coltitle=white,
+    fonttitle=\bfseries,
+    title=#2,
+    boxrule=0.8pt,
+    arc=2pt,
+    left=6pt, right=6pt, top=5pt, bottom=5pt
+  ]
+    #3
+  \end{tcolorbox}
+}
+
+% Uso:
+% \nota{blue}{Exclusión mutua}{%
+% La exclusión mutua garantiza que, en un instante dado, \textbf{como máximo un proceso}
+% se encuentre dentro de la sección crítica y utilice el recurso compartido.
+% }

@@ -1,0 +1,88 @@
+% ------------------------------------------------------------------
+% Figuras, tablas y entornos reutilizables.
+% ------------------------------------------------------------------
+
+\captionsetup{
+  font=footnotesize,
+  labelfont=bf,
+  textfont=normalfont,
+  justification=raggedright,
+  singlelinecheck=false
+}
+\captionsetup[table]{position=top}
+
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+
+% Tabla estándar con ancho completo y filas intercaladas.
+% Uso:
+% \begin{TablaSimple}[titulo corto]{Título}{tab:clave}{l Y}{Columna 1 & Columna 2}
+% fila 1 & contenido \\
+% fila 2 & contenido \\
+% \end{TablaSimple}
+\NewDocumentEnvironment{TablaSimple}{O{} m m m m +b}{%
+  \begin{table}[H] %htbp
+  \centering
+  \rowcolors{2}{TableStripe}{white}
+  \begin{tabularx}{\textwidth}{#4}
+  \toprule
+  #5 \\
+  \midrule
+  #6
+  \tabularnewline
+  \bottomrule
+  \end{tabularx}
+  \caption[#1]{#2}\label{#3}
+  \end{table}
+}{}
+
+% Tabla larga que salta de página y repite encabezado.
+% Uso:
+% \begin{TablaExtendida}[titulo corto]{Título}{tab:clave}{p{0.25\textwidth}p{0.65\textwidth}}{Columna 1 & Columna 2}
+% fila 1 & contenido \\
+% fila 2 & contenido \\
+% \end{TablaExtendida}
+\NewDocumentEnvironment{TablaExtendida}{O{} m m m m +b}{%
+  \captionsetup{position=bottom}  % Forzar caption abajo
+  \rowcolors{2}{TableStripe}{white}
+  \begin{longtable}{#4}
+  \caption[#1]{#2}\label{#3} \\  % Caption DENTRO de longtable
+  \toprule
+  #5 \\
+  \midrule
+  \endfirsthead
+  \caption[]{#2\space(continuación)} \\
+  \toprule
+  #5 \\
+  \midrule
+  \endhead
+  \bottomrule
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  #6
+  \tabularnewline
+  \end{longtable}
+  \captionsetup{position=top}  % Restaurar
+}{}
+
+% Tabla compacta: ancho natural (no ocupa todo \textwidth).
+% Uso:
+% \begin{TablaCompacta}[titulo corto]{Título}{tab:clave}{l l}{Columna 1 & Columna 2}
+% fila 1 & contenido \\
+% fila 2 & contenido \\
+% \end{TablaCompacta}
+\NewDocumentEnvironment{TablaCompacta}{O{} m m m m +b}{%
+  \begin{table}[H]
+  \centering
+  \rowcolors{2}{TableStripe}{white}
+  \begin{tabular}{#4}
+  \toprule
+  #5 \\
+  \midrule
+  #6
+  \tabularnewline
+  \bottomrule
+  \end{tabular}
+  \caption[#1]{#2}\label{#3}
+  \end{table}
+}{}

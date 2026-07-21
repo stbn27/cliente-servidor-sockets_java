@@ -1,0 +1,63 @@
+% !TeX root = ../../main.tex
+\begin{titlepage}
+\AddToShipoutPictureFG*{%
+  \AtPageUpperLeft{%
+    \hspace*{\dimexpr\paperwidth-5.3cm\relax}%
+    \raisebox{-3.1cm}{\includegraphics[width=4.6cm]{\InstitutionalLogo}}%
+  }%
+}
+\AddToShipoutPictureBG*{%
+  \AtPageLowerLeft{%
+    \includegraphics[width=\paperwidth]{\InstitutionalFooter}%
+  }%
+}
+
+\centering
+\vspace*{1.1cm}
+
+{\Large\bfseries \Universidad\par}
+\vspace{2pt}
+{\large\bfseries\color{BrandRed}\Unidad\par}
+\vspace{2pt}
+{\large \Division\par}
+{\large \Licenciatura\par}
+
+\vspace{1.7cm}
+
+{\LARGE\bfseries \ProjectTitle\par}
+\vspace{2pt}
+{\large \DocumentSubtitle\par}
+\vspace{1.7cm}
+
+{\large\textbf{Alumno}\par}
+\vspace{0.2cm}
+{\large \StudentName\par}
+{\normalsize \StudentId\par}
+{\normalsize \StudentEmail\par}
+
+%\vfill
+\vspace{1.7cm}
+
+% Información del profesor
+\ifdefempty{\ProfesorName}{%
+  \relax
+}{%
+  \noindent
+  \textbf{Profesor:} \ProfesorName
+}
+
+% Información del asesor y coasesor
+% \noindent
+% \ifdefempty{\CoAdvisorName}{%
+%   \RenderAdvisorBlock{Asesor}{\AdvisorName}{\AdvisorRole\\\AdvisorDepartment}{\AdvisorEmail}
+% }{%
+%   \RenderAdvisorBlock{Asesor}{\AdvisorName}{\AdvisorRole\\\AdvisorDepartment}{\AdvisorEmail}
+%   \hfill
+%   \RenderAdvisorBlock{Coasesor}{\CoAdvisorName}{\CoAdvisorRole\\\CoAdvisorDepartment}{\CoAdvisorEmail}
+% }
+
+\vspace{1.6cm}
+{\normalsize \AcademicTerm\par}
+\vspace{0.2cm}
+{\normalsize \DeliveryDate\par}
+\end{titlepage}

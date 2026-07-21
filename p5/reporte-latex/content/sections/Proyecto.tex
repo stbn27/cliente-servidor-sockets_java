@@ -1,0 +1,70 @@
+\section{Proyecto}
+
+El proyecto fue desarrollado en \texttt{Java} utilizando \texttt{Maven} ya que esto facilito mas el proyecto y la gestión de dependencias.
+
+
+\nota{BrandBlue}{Código fuente}{%
+El código fuente de la práctica se encuentra en el repositorio \href{https://github.com/stbn27/cliente-servidor-sockets_java/tree/master/p5}{\color{blue}\InlineCode{stbn27/cliente-servidor-sockets\_java/p5}}. 
+Contiene instrucciones para compilar y ejecutar el proyecto, así como un archivo \InlineCode{README.md} con información adicional.
+}
+
+\subsection{Servidor}
+
+El \textbf{servidor} no tiene interfaz gráfica, y su ejecución se realiza desde la línea de comandos. Como dependencias usas las siguientes librerías:
+
+\begin{itemize}
+    \item \texttt{distribuidos:common} - Contiene clases y utilidades compartidas entre el cliente y el servidor.
+    \item \texttt{com.h2database:h2} - Base de datos en memoria utilizada para almacenar la información de los usuarios y sus contraseñas.
+    \item \texttt{at.favre.lib:bcrypt} - Librería para el hash de contraseñas
+    \item \texttt{org.slf4j:slf4j-api} - Interfaz de logging utilizada por el servidor.
+\end{itemize}
+
+La \textbf{base de datos} utilizada es \texttt{H2}, que es una base de datos en memoria. Esto significa que los datos se almacenan temporalmente mientras el servidor está en ejecución y se pierden al cerrar el servidor. Esto es útil para pruebas y desarrollo, pero no es adecuado para un entorno de producción donde se requiere persistencia de datos.
+Las \textbf{sentencias} SQL para crear las tablas necesarias se ejecutan en automático al iniciar el servidor, por lo que no es necesario ejecutar ningún script adicional para configurar la base de datos.
+
+Las credenciales de acceso y variables se configura en el archivo \texttt{server.properties}, los valores por defecto son los siguientes:
+\begin{lstlisting}[
+    style=yaml,
+    numbers=none,
+    caption={Archivo de configuración del servidor (\InlineCode{server.properties})},
+    label={cod:server-properties}
+]
+rmi.host=localhost
+rmi.port=1099
+rmi.object.port=1100
+rmi.service=TableroNoticias
+database.path=./data/tablero-noticias
+session.timeout.minutes=30
+\end{lstlisting}
+
+\textbf{\color{BrandRed}Nota:} Aunque \texttt{H2} permite acceder a la consola web para administrar la base de datos, en este proyecto no se pueden crear usuarios directamente desde ahí, ya que las constraseñas se almacenan encriptadas, si se quisiera crear un usuario usando el apartado de administración deshabilitar la encriptación de contraseñas en los archivos \texttt{DatabaseInitializer.java} y en \texttt{AutenticacionService.java} en dichos archivos  ya esta documentada las líneas respectivas.
+
+\subsection{Cliente}
+
+El cliente tiene una interfaz gráfica desarrollada con \texttt{swing}. La interfaz permite a los usuarios colocar las credenciales de acceso al servidor, ver las noticias(sin iniciar sesión) y realizar acciones como iniciar sesión, cerrar sesión y publicar noticias (si se ha iniciado sesión). La interfaz es sencilla y fácil de usar, con botones y campos de texto para interactuar con el servidor.
+
+Las dependencias del cliente son las siguientes:
+\begin{itemize}
+    \item \texttt{distribuidos:common} - Contiene clases y utilidades compartidas entre el cliente y el servidor.
+    \item \texttt{com.formdev:flatlaf} - Librería para la apariencia de la interfaz gráfica, proporcionando un estilo moderno y consistente.
+\end{itemize}
+
+Cuando se ejecuta el cliente, en automático intenta conectarse al servidor utilizando la dirección y el puerto especificados en el archivo \texttt{ConexionDialog}. Si el servidor no está disponible, se muestra una ventana para que el usuario ingrese la dirección y el puerto correctos. Una vez conectado, el cliente puede enviar solicitudes al servidor y recibir respuestas, permitiendo a los usuarios interactuar con la aplicación de manera efectiva.
+
+% \subsection{Directorios}
+
+% El proyecto tiene la siguiente estructura de directorios:
+
+% \begin{lstlisting}[
+%     style=yaml, 
+%     numbers=none, 
+% ]
+% .
+% ├── client
+% ├── common
+% ├── data
+% ├── docs
+% ├── pom.xml
+% ├── README.md
+% └── server
+% \end{lstlisting}

@@ -1,0 +1,134 @@
+% ------------------------------------------------------------------
+% Bloques de código.
+% Fondo gris claro, numeración lateral y caption superior con doble línea.
+% ------------------------------------------------------------------
+
+\renewcommand{\lstlistingname}{Código}
+\renewcommand{\lstlistlistingname}{Índice de códigos}
+
+\DeclareCaptionFormat{CodeCaptionRule}{%
+  \hrule height 0.5pt\relax
+  \vspace{3pt}
+  #1#2#3\par
+  \vspace{3pt}
+  \hrule height 0.5pt\relax
+}
+
+\captionsetup[lstlisting]{
+  format=CodeCaptionRule,
+  position=top,
+  font=footnotesize,
+  labelfont=bf,
+  singlelinecheck=false
+}
+
+\lstdefinestyle{BaseCode}{
+  backgroundcolor=\color{CodeBg},
+  basicstyle=\small\ttfamily,
+  commentstyle=\color{CodeComment}\itshape,
+  keywordstyle=\color{CodeKeyword}\bfseries,
+  stringstyle=\color{CodeString},
+  numbers=left,
+  numberstyle=\scriptsize\color{CodeComment},
+  numbersep=8pt,
+  stepnumber=1,
+  breaklines=true,
+  breakatwhitespace=false,
+  showstringspaces=false,
+  keepspaces=true,
+  columns=fullflexible,
+  frame=single,
+  framerule=0.4pt,
+  rulecolor=\color{CodeBorder},
+  framesep=6pt,
+  xleftmargin=2.2em,
+  framexleftmargin=2.2em,
+  xrightmargin=0pt,
+  linewidth=\dimexpr\linewidth-2.2em\relax,
+  aboveskip=10pt,
+  belowskip=10pt,
+  tabsize=2,
+  captionpos=t
+}
+
+\lstdefinelanguage{JavaScript}{
+  morekeywords={await,async,break,const,continue,default,export,false,from,function,if,import,let,new,null,return,switch,this,true,try,var,while},
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+  morestring=[b]'
+}
+
+\lstdefinelanguage{JSON}{
+  morestring=[b]",
+  morestring=[b]',
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morekeywords={true,false,null},
+  sensitive=true,
+  alsoletter={},
+  alsodigit={},
+  literate=
+    {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+    {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+}
+
+% Resaltar específicamente propiedades de JSON
+\lstdefinelanguage{JSONExtended}{
+  morestring=[b]",
+  morestring=[b]',
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morekeywords={true,false,null},
+  sensitive=true,
+  alsoletter={},
+  alsodigit={},
+  % Resaltar nombres de propiedades (experimental)
+  literate=
+    *{true}{{{\color{CodeKeyword}true}}}4
+    {false}{{{\color{CodeKeyword}false}}}5
+    {null}{{{\color{CodeKeyword}null}}}4
+}
+
+% Entorno para bloques JSON: mismo contador que \lstlistingname
+% pero con el prefijo "JSON" en el caption en vez de "Código".
+\lstnewenvironment{jsonlisting}[1][]{%
+  \lstset{style=json, numbers=none}%
+  \lstset{#1}%
+  \renewcommand{\lstlistingname}{Código JSON}%
+}{%
+  \renewcommand{\lstlistingname}{Código}%
+}
+
+\lstdefinestyle{ComandoInline}{
+  style=BaseCode,
+  frame=none,
+  numbers=none,
+  backgroundcolor=\color{CodeBg},
+  basicstyle=\small\ttfamily,
+  aboveskip=6pt,
+  belowskip=6pt,
+  columns=fullflexible,
+  breaklines=true,
+  breakatwhitespace=false,
+}
+
+\NewDocumentCommand{\comando}{v}{%
+  \begin{center}
+  \lstinline[style=ComandoInline]{#1}
+  \end{center}
+}
+
+
+\lstdefinestyle{python}{style=BaseCode,language=Python}
+\lstdefinestyle{javascript}{style=BaseCode,language=JavaScript}
+\lstdefinestyle{bash}{style=BaseCode,language=bash}
+\lstdefinestyle{json}{style=BaseCode,language=JSON}
+\lstdefinestyle{text}{style=BaseCode,language={}}
+\lstdefinestyle{yaml}{style=BaseCode,language={}}
+\lstdefinestyle{sql}{style=BaseCode,language=SQL}
+\lstdefinestyle{json}{style=BaseCode,language=JSON}
+\lstdefinestyle{jsonextended}{style=BaseCode,language=JSONExtended}
+
+\lstset{style=BaseCode}

@@ -1,0 +1,52 @@
+% ------------------------------------------------------------------
+% Configuración tipográfica.
+% Cambia la selección en project-data.tex.
+% ------------------------------------------------------------------
+
+\defaultfontfeatures{Ligatures=TeX}
+
+\newcommand{\ApplyMainFont}{%
+  \ifdefstring{\MainFontSelection}{quicksand}{%
+    \setmainfont{Quicksand-Regular.ttf}[
+      Path = fonts/Quicksand/static/,
+      BoldFont = Quicksand-Bold.ttf,
+      ItalicFont = Quicksand-Regular.ttf,
+      BoldItalicFont = Quicksand-Bold.ttf,
+      ItalicFeatures = {FakeSlant=0.18},
+      BoldItalicFeatures = {FakeSlant=0.18}
+    ]%
+  }{%
+    \ifdefstring{\MainFontSelection}{arial}{%
+      % Fuente sans-serif similar a Arial y disponible en TeX Live.
+      \setmainfont{TeX Gyre Heros}%
+    }{%
+      \ifdefstring{\MainFontSelection}{times}{%
+        \setmainfont{TeX Gyre Termes}%
+      }{%
+        \setmainfont{Poppins-Regular.ttf}[
+          Path = fonts/Poppins/,
+          BoldFont = Poppins-Bold.ttf,
+          ItalicFont = Poppins-Italic.ttf,
+          BoldItalicFont = Poppins-BoldItalic.ttf
+        ]%
+      }%
+    }%
+  }%
+}
+
+\newcommand{\ApplyMonoFont}{%
+  \ifdefstring{\MonoFontSelection}{courier}{%
+    \setmonofont{TeX Gyre Cursor}[Scale=MatchLowercase]%
+  }{%
+    \setmonofont{GeistMono-Regular.ttf}[
+      Path = fonts/Geist_Mono/static/,
+      BoldFont = GeistMono-Bold.ttf,
+      ItalicFont = GeistMono-Italic.ttf,
+      BoldItalicFont = GeistMono-BoldItalic.ttf,
+      Scale = MatchLowercase
+    ]%
+  }%
+}
+
+\ApplyMainFont
+\ApplyMonoFont
