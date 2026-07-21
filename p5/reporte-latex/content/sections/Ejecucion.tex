@@ -65,3 +65,46 @@ Para que un usuario pueda publicar una noticia, debe iniciar sesión con un usua
 \end{figure}
 
 Si el usuario ingresa las credenciales incorrectas se muestra un mensaje de error, como se aprecia en la Figura \ref{fig:cliente-ventana-error-login}. En este caso, el usuario debe verificar sus credenciales y volver a intentar iniciar sesión.
+
+\begin{figure}[htbp]
+    \centering
+    \subfloat[Errores en credenciales]{\includegraphics[width=0.52\textwidth]{assets/img/cliente/error-inicio-sesion-1.png}}
+    \hfill
+    \subfloat[Sin credenciales]{\includegraphics[width=0.40\textwidth]{assets/img/cliente/error-inicio-sesion-2.png}}
+    \caption{Ventana de error al iniciar sesión en el cliente}
+    \label{fig:cliente-ventana-error-login}
+\end{figure}
+
+Cuando el usuario ingresa las credenciales correctas, el sistema le muestra otos botones adicionales, como se aprecia en la Figura \ref{fig:cliente-ventana-login-exito}. Estos botones permiten al usuario publicar noticias, editar, eliminar y cerrar su sesión.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{assets/img/cliente/cliente-logeado.png}
+    \caption{Ventana de búsqueda de noticias en el tablero}
+    \label{fig:cliente-ventana-login-exito}
+\end{figure}
+
+\subsubsection{Publicar una noticia}
+
+Presionando el botón de \emph{Publicar} se muestra la ventana de publicación de noticias, como se aprecia en la Figura \ref{fig:cliente-ventana-publicar-noticia}. En esta ventana el usuario debe ingresar el título, contenido y categoría de la noticia que desea publicar. Una vez que el usuario ingresa toda la información requerida y presiona el botón de \emph{Guardar}, la noticia se envía al servidor para ser almacenada en la base de datos y posteriormente mostrada en el tablero principal.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{assets/img/cliente/publica-noticia.png}
+    \caption{Ventana de publicación de noticias}
+    \label{fig:cliente-ventana-publicar-noticia}
+\end{figure}
+
+
+\subsubsection{Ver noticias publicadas}
+
+Para visualizar las noticias publicadas, el usuario puede hacer clic en el título de la noticia que desea leer. Esto abrirá una ventana con el contenido completo de la noticia, como se aprecia en la Figura \ref{fig:cliente-ventana-ver-noticia}. En esta ventana, el usuario puede leer la noticia completa y ver información adicional como la fecha de publicación y el autor.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{assets/img/cliente/vista-noticia.png}
+    \caption{Ventana de visualización de noticias}
+    \label{fig:cliente-ventana-ver-noticia}
+\end{figure}
+
+El proceso para editar una noticia es similar al de publicar una nueva noticia. El usuario debe seleccionar la noticia que desea editar y hacer clic en el botón de \emph{Editar} previamente haber seleccionado una noticia de la tabla. Esto abrirá la ventana de edición de noticias, donde el usuario puede modificar el título, contenido y categoría de la noticia. Una vez que el usuario realiza los cambios y presiona el botón de \emph{Guardar}, la noticia se actualiza en la base de datos y se refleja en el tablero principal.
