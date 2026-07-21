@@ -53,7 +53,7 @@ class RequirementsCoverageTest {
     void preparar() throws Exception {
         database = DatabaseManager.inMemory("requirements_" + System.nanoTime());
         initializer = new DatabaseInitializer(database);
-        initializer.initialize();
+        initializer.inicializar();
         sesiones = new SesionService(Duration.ofMinutes(30));
         autenticacion = new AutenticacionService(database, new AutorRepository(), sesiones);
         noticias = new NoticiaService(database, new NoticiaRepository(), sesiones);
@@ -66,7 +66,7 @@ class RequirementsCoverageTest {
 
     @Test
     void inicializacionEsIdempotenteYLasContrasenasNoEstanEnTextoPlano() throws Exception {
-        initializer.initialize();
+        initializer.inicializar();
 
         try (Connection connection = database.getConnection();
              PreparedStatement autores = connection.prepareStatement(
@@ -93,9 +93,9 @@ class RequirementsCoverageTest {
         Sesion sesion = autenticacion.iniciar("redactor1", password);
 
         assertTrue(Arrays.equals(new char[password.length], password));
-        sesiones.cerrar(sesion.getToken());
+        sesiones.cerrar(sesion.token());
         assertThrows(AutenticacionException.class,
-                () -> noticias.publicar(sesion.getToken(),
+                () -> noticias.publicar(sesion.token(),
                         new NuevaNoticia("Sin sesión", "Contenido", Categoria.GENERAL)));
     }
 
@@ -105,7 +105,7 @@ class RequirementsCoverageTest {
                 99, "lector", "hash-no-expuesto", "Lector", Rol.LECTOR, true));
 
         assertThrows(AutorizacionException.class,
-                () -> noticias.publicar(lector.getToken(),
+                () -> noticias.publicar(lector.token(),
                         new NuevaNoticia("No autorizada", "Contenido", Categoria.GENERAL)));
     }
 
@@ -122,7 +122,7 @@ class RequirementsCoverageTest {
         try {
             IntStream.range(0, publicaciones).forEach(indice -> escrituras.add(executor.submit(() -> {
                 inicio.await();
-                return noticias.publicar(redactor.getToken(), new NuevaNoticia(
+                return noticias.publicar(redactor.token(), new NuevaNoticia(
                         "Publicación paralela " + indice,
                         "Contenido marcador-concurrente " + indice,
                         Categoria.TECNOLOGIA));
@@ -137,7 +137,7 @@ class RequirementsCoverageTest {
             inicio.countDown();
             Set<Long> ids = escrituras.stream()
                     .map(this::resultado)
-                    .map(Noticia::getId)
+                    .map(Noticia::id)
                     .collect(Collectors.toSet());
             assertEquals(publicaciones, ids.size(), "Cada publicación obtiene un ID distinto");
             lecturas.forEach(future -> assertTrue(
@@ -145,7 +145,7 @@ class RequirementsCoverageTest {
 
             List<Noticia> resultadoFinal = noticias.buscar("marcador-concurrente");
             assertEquals(publicaciones, resultadoFinal.size());
-            assertTrue(resultadoFinal.stream().allMatch(noticia -> ids.contains(noticia.getId())));
+            assertTrue(resultadoFinal.stream().allMatch(noticia -> ids.contains(noticia.id())));
         } finally {
             executor.shutdown();
             assertTrue(executor.awaitTermination(10, TimeUnit.SECONDS));

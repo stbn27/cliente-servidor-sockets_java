@@ -2,17 +2,8 @@ package client.ui;
 
 import common.model.Noticia;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Window;
+import javax.swing.*;
+import java.awt.*;
 import java.time.format.DateTimeFormatter;
 
 public final class DetalleNoticiaDialog extends JDialog {
@@ -30,21 +21,21 @@ public final class DetalleNoticiaDialog extends JDialog {
     }
 
     private void construirInterfaz(Noticia noticia) {
-        JLabel titulo = new JLabel(noticia.getTitulo());
+        JLabel titulo = new JLabel(noticia.titulo());
         titulo.setFont(titulo.getFont().deriveFont(Font.BOLD, 18f));
 
         JPanel datos = new JPanel(new GridLayout(0, 1, 3, 3));
         datos.add(new JLabel("Categoría: " + nombreCategoria(noticia)));
-        datos.add(new JLabel("Autor: " + noticia.getAutorNombre()));
-        datos.add(new JLabel("Creación: " + formatear(noticia.getFechaCreacion())));
+        datos.add(new JLabel("Autor: " + noticia.autorNombre()));
+        datos.add(new JLabel("Creación: " + formatear(noticia.fechaCreacion())));
         datos.add(new JLabel("Última modificación: "
-                + formatear(noticia.getFechaModificacion())));
+                + formatear(noticia.fechaModificacion())));
 
         JPanel cabecera = new JPanel(new BorderLayout(4, 8));
         cabecera.add(titulo, BorderLayout.NORTH);
         cabecera.add(datos, BorderLayout.CENTER);
 
-        JTextArea contenido = new JTextArea(noticia.getContenido());
+        JTextArea contenido = new JTextArea(noticia.contenido());
         contenido.setEditable(false);
         contenido.setLineWrap(true);
         contenido.setWrapStyleWord(true);
@@ -70,6 +61,6 @@ public final class DetalleNoticiaDialog extends JDialog {
     }
 
     private String nombreCategoria(Noticia noticia) {
-        return noticia.getCategoria().getNombreVisible();
+        return noticia.categoria().getNombreVisible();
     }
 }

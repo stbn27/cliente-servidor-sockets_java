@@ -4,21 +4,8 @@ import common.model.Categoria;
 import common.model.Noticia;
 import common.validation.ValidadorNoticia;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.Window;
+import javax.swing.*;
+import java.awt.*;
 
 public final class NoticiaDialog extends JDialog {
 
@@ -33,9 +20,9 @@ public final class NoticiaDialog extends JDialog {
                 ModalityType.APPLICATION_MODAL);
         construirInterfaz();
         if (noticia != null) {
-            tituloField.setText(noticia.getTitulo());
-            categoriaCombo.setSelectedItem(noticia.getCategoria());
-            contenidoArea.setText(noticia.getContenido());
+            tituloField.setText(noticia.titulo());
+            categoriaCombo.setSelectedItem(noticia.categoria());
+            contenidoArea.setText(noticia.contenido());
             contenidoArea.setCaretPosition(0);
         }
     }

@@ -29,8 +29,8 @@ public final class ConexionRmi {
         TableroNoticiasRemote remoto =
                 (TableroNoticiasRemote) registry.lookup(servicioNombre);
         EstadoServidor estado = remoto.verificarEstado();
-        if (estado == null || !estado.isDisponible()
-                || !estado.isBaseDatosDisponible()) {
+        if (estado == null || !estado.disponible()
+                || !estado.baseDatosDisponible()) {
             throw new RemoteException("El servidor no informó un estado disponible.");
         }
         return new ConexionRmi(host, puerto, servicioNombre, remoto);

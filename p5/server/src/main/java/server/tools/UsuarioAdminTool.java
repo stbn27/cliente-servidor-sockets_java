@@ -26,7 +26,7 @@ public final class UsuarioAdminTool {
 
         ServerConfig config = ServerConfig.load(extraerConfigArgs(args));
         try (DatabaseManager database = new DatabaseManager(config.databasePath())) {
-            new DatabaseInitializer(database).initialize();
+            new DatabaseInitializer(database).inicializar();
             String command = args[0].toLowerCase();
             switch (command) {
                 case "listar" -> listar(database);

@@ -16,9 +16,9 @@ class SesionServiceTest {
         SesionService service = new SesionService(Duration.ofMinutes(1), clock, new SecureRandom());
         assertThrows(AutenticacionException.class, () -> service.requerir("inexistente"));
         var session = service.crear(new AutorEntity(1,"autor","hash","Autor", Rol.REDACTOR,true));
-        assertEquals(1, service.requerir(session.getToken()).autorId());
+        assertEquals(1, service.requerir(session.token()).autorId());
         clock.instant = clock.instant.plusSeconds(61);
-        assertThrows(AutenticacionException.class, () -> service.requerir(session.getToken()));
+        assertThrows(AutenticacionException.class, () -> service.requerir(session.token()));
     }
 
     private static final class MutableClock extends Clock {

@@ -40,8 +40,8 @@ class ValidadorNoticiaTest {
         NuevaNoticia normalizada = ValidadorNoticia.validarYNormalizar(
                 new NuevaNoticia("  Título  ", "\n Contenido \t", Categoria.CIENCIA));
 
-        assertEquals("Título", normalizada.getTitulo());
-        assertEquals("Contenido", normalizada.getContenido());
+        assertEquals("Título", normalizada.titulo());
+        assertEquals("Contenido", normalizada.contenido());
     }
 
     @Test
@@ -50,8 +50,8 @@ class ValidadorNoticiaTest {
                 new NuevaNoticia("a".repeat(ValidadorNoticia.TITULO_MAXIMO),
                         "b".repeat(ValidadorNoticia.CONTENIDO_MAXIMO), Categoria.CULTURA));
 
-        assertEquals(ValidadorNoticia.TITULO_MAXIMO, normalizada.getTitulo().length());
-        assertEquals(ValidadorNoticia.CONTENIDO_MAXIMO, normalizada.getContenido().length());
+        assertEquals(ValidadorNoticia.TITULO_MAXIMO, normalizada.titulo().length());
+        assertEquals(ValidadorNoticia.CONTENIDO_MAXIMO, normalizada.contenido().length());
     }
 
     @Test

@@ -23,27 +23,40 @@ public final class DatabaseManager implements AutoCloseable {
             jdbcUrl = "jdbc:h2:mem:" + databasePath + ";DB_CLOSE_DELAY=-1";
         } else {
             Path absolute = databasePath.toAbsolutePath().normalize();
-            try { if (absolute.getParent() != null) Files.createDirectories(absolute.getParent()); }
-            catch (Exception e) { throw new SQLException("No se pudo crear el directorio de base de datos", e); }
+            try {
+                if (absolute.getParent() != null) Files.createDirectories(absolute.getParent());
+            } catch (Exception e) {
+                throw new SQLException("No se pudo crear el directorio de base de datos", e);
+            }
             jdbcUrl = "jdbc:h2:file:" + absolute + ";DB_CLOSE_ON_EXIT=FALSE";
         }
-        try (Connection ignored = getConnection()) { LOGGER.info("Base H2 disponible"); }
+        try (Connection ignored = getConnection()) {
+            LOGGER.info("Base H2 disponible");
+        }
     }
 
     public static DatabaseManager inMemory(String name) throws SQLException {
         return new DatabaseManager(Path.of(name.replaceAll("[^A-Za-z0-9_-]", "_")), true);
     }
 
-    public Connection getConnection() throws SQLException { return DriverManager.getConnection(jdbcUrl, "sa", ""); }
-
-    public boolean isAvailable() {
-        try (Connection connection = getConnection()) { return connection.isValid(2); }
-        catch (SQLException e) { return false; }
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(jdbcUrl, "sa", "");
     }
 
-    @Override public void close() {
+    public boolean isAvailable() {
+        try (Connection connection = getConnection()) {
+            return connection.isValid(2);
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public void close() {
         try (Connection connection = getConnection(); Statement statement = connection.createStatement()) {
             statement.execute("SHUTDOWN");
-        } catch (SQLException e) { LOGGER.warn("No fue posible cerrar H2 limpiamente: {}", e.getMessage()); }
+        } catch (SQLException e) {
+            LOGGER.warn("No fue posible cerrar H2 limpiamente: {}", e.getMessage());
+        }
     }
 }

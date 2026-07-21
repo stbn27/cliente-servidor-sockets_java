@@ -1,17 +1,8 @@
 package server.remote;
 
 import common.dto.EstadoServidor;
-import common.exception.AutenticacionException;
-import common.exception.AutorizacionException;
-import common.exception.ConflictoEdicionException;
-import common.exception.NoticiaNoEncontradaException;
-import common.exception.ServicioNoDisponibleException;
-import common.exception.ValidacionException;
-import common.model.ActualizacionNoticia;
-import common.model.Categoria;
-import common.model.Noticia;
-import common.model.NuevaNoticia;
-import common.model.Sesion;
+import common.exception.*;
+import common.model.*;
 import common.remote.TableroNoticiasRemote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

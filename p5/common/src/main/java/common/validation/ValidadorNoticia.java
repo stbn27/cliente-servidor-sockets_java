@@ -4,7 +4,9 @@ import common.exception.ValidacionException;
 import common.model.ActualizacionNoticia;
 import common.model.NuevaNoticia;
 
-/** Reglas compartidas de entrada; el servidor siempre debe volver a aplicarlas. */
+/**
+ * Reglas compartidas de entrada; el servidor siempre debe volver a aplicarlas.
+ */
 public final class ValidadorNoticia {
 
     public static final int TITULO_MAXIMO = 200;
@@ -20,13 +22,13 @@ public final class ValidadorNoticia {
             throw new ValidacionException("La noticia es obligatoria.");
         }
         String titulo = normalizarTextoObligatorio(
-                noticia.getTitulo(), "El título", TITULO_MAXIMO);
+                noticia.titulo(), "El título", TITULO_MAXIMO);
         String contenido = normalizarTextoObligatorio(
-                noticia.getContenido(), "El contenido", CONTENIDO_MAXIMO);
-        if (noticia.getCategoria() == null) {
+                noticia.contenido(), "El contenido", CONTENIDO_MAXIMO);
+        if (noticia.categoria() == null) {
             throw new ValidacionException("La categoría es obligatoria.");
         }
-        return new NuevaNoticia(titulo, contenido, noticia.getCategoria());
+        return new NuevaNoticia(titulo, contenido, noticia.categoria());
     }
 
     public static ActualizacionNoticia validarYNormalizar(ActualizacionNoticia actualizacion)
@@ -35,13 +37,13 @@ public final class ValidadorNoticia {
             throw new ValidacionException("La actualización es obligatoria.");
         }
         String titulo = normalizarTextoObligatorio(
-                actualizacion.getTitulo(), "El título", TITULO_MAXIMO);
+                actualizacion.titulo(), "El título", TITULO_MAXIMO);
         String contenido = normalizarTextoObligatorio(
-                actualizacion.getContenido(), "El contenido", CONTENIDO_MAXIMO);
-        if (actualizacion.getCategoria() == null) {
+                actualizacion.contenido(), "El contenido", CONTENIDO_MAXIMO);
+        if (actualizacion.categoria() == null) {
             throw new ValidacionException("La categoría es obligatoria.");
         }
-        return new ActualizacionNoticia(titulo, contenido, actualizacion.getCategoria());
+        return new ActualizacionNoticia(titulo, contenido, actualizacion.categoria());
     }
 
     public static String validarYNormalizarBusqueda(String texto) throws ValidacionException {

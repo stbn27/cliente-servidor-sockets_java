@@ -47,13 +47,13 @@ public final class NoticiaTableModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Noticia noticia = noticias.get(rowIndex);
         return switch (columnIndex) {
-            case 0 -> noticia.getTitulo();
+            case 0 -> noticia.titulo();
             case 1 -> nombreCategoria(noticia);
-            case 2 -> noticia.getAutorNombre();
-            case 3 -> noticia.getFechaCreacion() == null ? "" :
-                    FORMATO_FECHA.format(noticia.getFechaCreacion());
-            case 4 -> noticia.getFechaModificacion() == null ? "" :
-                    FORMATO_FECHA.format(noticia.getFechaModificacion());
+            case 2 -> noticia.autorNombre();
+            case 3 -> noticia.fechaCreacion() == null ? "" :
+                    FORMATO_FECHA.format(noticia.fechaCreacion());
+            case 4 -> noticia.fechaModificacion() == null ? "" :
+                    FORMATO_FECHA.format(noticia.fechaModificacion());
             default -> "";
         };
     }
@@ -64,9 +64,9 @@ public final class NoticiaTableModel extends AbstractTableModel {
     }
 
     private String nombreCategoria(Noticia noticia) {
-        if (noticia.getCategoria() == null) {
+        if (noticia.categoria() == null) {
             return "";
         }
-        return noticia.getCategoria().getNombreVisible();
+        return noticia.categoria().getNombreVisible();
     }
 }

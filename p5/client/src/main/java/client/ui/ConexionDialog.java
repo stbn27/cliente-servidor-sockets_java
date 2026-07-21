@@ -2,27 +2,18 @@ package client.ui;
 
 import client.rmi.ConexionRmi;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingWorker;
-import java.awt.BorderLayout;
-import java.awt.Cursor;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.Window;
+import javax.swing.*;
+import java.awt.*;
 import java.rmi.NotBoundException;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
 public final class ConexionDialog extends JDialog {
 
-    private static final int PUERTO_PREDETERMINADO = 1099;
-    private static final String SERVICIO_PREDETERMINADO = "TableroNoticias";
+    public static final int PUERTO_PREDETERMINADO = 1099;
+    public static final String HOST_PREDETERMINADO = "localhost";
+
+    public static final String SERVICIO_PREDETERMINADO = "TableroNoticias";
 
     private final JTextField servidorField = new JTextField(20);
     private final JTextField puertoField = new JTextField(8);
@@ -33,14 +24,14 @@ public final class ConexionDialog extends JDialog {
     private final Consumer<ConexionRmi> alConectar;
 
     public ConexionDialog(Window owner, ConexionRmi anterior,
-                          Consumer<ConexionRmi> alConectar) {
+                          Consumer<ConexionRmi> alConectar
+    ) {
         super(owner, "Conexión al servidor", ModalityType.APPLICATION_MODAL);
         this.alConectar = alConectar;
-        servidorField.setText(anterior == null ? "localhost" : anterior.getHost());
-        puertoField.setText(String.valueOf(anterior == null
-                ? PUERTO_PREDETERMINADO : anterior.getPuerto()));
-        servicioField.setText(anterior == null
-                ? SERVICIO_PREDETERMINADO : anterior.getServicioNombre());
+        servidorField.setText(anterior == null ? HOST_PREDETERMINADO : anterior.getHost());
+        puertoField.setText(String.valueOf(anterior == null ? PUERTO_PREDETERMINADO : anterior.getPuerto()));
+        servicioField.setText(anterior == null ? SERVICIO_PREDETERMINADO : anterior.getServicioNombre());
+
         construirInterfaz();
     }
 

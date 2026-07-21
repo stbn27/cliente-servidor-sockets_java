@@ -4,30 +4,10 @@ import client.rmi.ConexionRmi;
 import client.ui.model.NoticiaTableModel;
 import common.exception.AutenticacionException;
 import common.exception.ConflictoEdicionException;
-import common.model.ActualizacionNoticia;
-import common.model.Categoria;
-import common.model.Noticia;
-import common.model.NuevaNoticia;
-import common.model.Sesion;
+import common.model.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingWorker;
-import java.awt.BorderLayout;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
@@ -178,7 +158,7 @@ public final class MainFrame extends JFrame {
                 resultado = conexion.getServicio().buscarPorPalabraClave(texto);
                 if (categoria != null) {
                     resultado = resultado.stream()
-                            .filter(noticia -> categoria == noticia.getCategoria())
+                            .filter(noticia -> categoria == noticia.categoria())
                             .toList();
                 }
             } else if (categoria != null) {
@@ -219,7 +199,7 @@ public final class MainFrame extends JFrame {
             avisarSeleccion();
             return;
         }
-        ejecutar(() -> conexion.getServicio().obtenerNoticia(seleccionada.getId()),
+        ejecutar(() -> conexion.getServicio().obtenerNoticia(seleccionada.id()),
                 noticia -> DetalleNoticiaDialog.mostrar(this, noticia), this::manejarFallo);
     }
 
@@ -257,7 +237,7 @@ public final class MainFrame extends JFrame {
         }
         NuevaNoticia nueva = new NuevaNoticia(
                 datos.titulo(), datos.contenido(), datos.categoria());
-        ejecutar(() -> conexion.getServicio().publicarNoticia(sesion.getToken(), nueva),
+        ejecutar(() -> conexion.getServicio().publicarNoticia(sesion.token(), nueva),
                 noticia -> {
                     JOptionPane.showMessageDialog(this, "La noticia fue publicada.");
                     actualizarNoticias();
@@ -272,7 +252,7 @@ public final class MainFrame extends JFrame {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        ejecutar(() -> conexion.getServicio().obtenerNoticia(seleccionada.getId()),
+        ejecutar(() -> conexion.getServicio().obtenerNoticia(seleccionada.id()),
                 actual -> abrirEdicion(actual), this::manejarFallo);
     }
 
@@ -288,7 +268,7 @@ public final class MainFrame extends JFrame {
         ActualizacionNoticia cambio = new ActualizacionNoticia(
                 datos.titulo(), datos.contenido(), datos.categoria());
         ejecutar(() -> conexion.getServicio().editarNoticia(
-                        sesion.getToken(), actual.getId(), cambio, actual.getVersion()),
+                        sesion.token(), actual.id(), cambio, actual.version()),
                 noticia -> {
                     JOptionPane.showMessageDialog(this, "La noticia fue actualizada.");
                     actualizarNoticias();
@@ -320,7 +300,7 @@ public final class MainFrame extends JFrame {
             return;
         }
         ejecutar(() -> {
-            conexion.getServicio().eliminarNoticia(sesion.getToken(), seleccionada.getId());
+            conexion.getServicio().eliminarNoticia(sesion.token(), seleccionada.id());
             return null;
         }, ignorado -> {
             JOptionPane.showMessageDialog(this, "La noticia fue eliminada.");
@@ -332,7 +312,7 @@ public final class MainFrame extends JFrame {
         if (!haySesion()) {
             return;
         }
-        String token = sesion.getToken();
+        String token = sesion.token();
         ejecutar(() -> {
             conexion.getServicio().cerrarSesion(token);
             return null;
@@ -353,7 +333,7 @@ public final class MainFrame extends JFrame {
     private void actualizarEstadoSesion() {
         boolean autenticado = haySesion();
         usuarioLabel.setText(autenticado
-                ? "Redactor: " + sesion.getAutorNombre()
+                ? "Redactor: " + sesion.autorNombre()
                 : "Modo lector");
         loginButton.setVisible(!autenticado);
         accionesRedactor.setVisible(autenticado);
@@ -382,11 +362,11 @@ public final class MainFrame extends JFrame {
     }
 
     private boolean esPropia(Noticia noticia) {
-        return haySesion() && noticia != null && noticia.getAutorId() == sesion.getAutorId();
+        return haySesion() && noticia != null && noticia.autorId() == sesion.autorId();
     }
 
     private boolean haySesion() {
-        return sesion != null && sesion.getToken() != null;
+        return sesion != null && sesion.token() != null;
     }
 
     private Categoria categoriaSeleccionada() {

@@ -10,18 +10,18 @@ public final class ResultadoOperacion<T extends Serializable> implements Seriali
     private final T dato;
     private final String mensaje;
 
+    private ResultadoOperacion(boolean exito, T dato, String mensaje) {
+        this.exito = exito;
+        this.dato = dato;
+        this.mensaje = mensaje;
+    }
+
     public static <T extends Serializable> ResultadoOperacion<T> exito(T dato) {
         return new ResultadoOperacion<>(true, dato, null);
     }
 
     public static <T extends Serializable> ResultadoOperacion<T> error(String mensaje) {
         return new ResultadoOperacion<>(false, null, mensaje);
-    }
-
-    private ResultadoOperacion(boolean exito, T dato, String mensaje) {
-        this.exito = exito;
-        this.dato = dato;
-        this.mensaje = mensaje;
     }
 
     public boolean isExito() {

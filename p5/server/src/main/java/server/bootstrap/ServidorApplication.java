@@ -43,7 +43,7 @@ public final class ServidorApplication {
         TableroNoticiasRemoteImpl implementacion = null;
 
         try {
-            new DatabaseInitializer(database).initialize();
+            new DatabaseInitializer(database).inicializar();
             AutorRepository autores = new AutorRepository();
             NoticiaRepository noticias = new NoticiaRepository();
             SesionService sesiones = new SesionService(config.sessionTimeout());

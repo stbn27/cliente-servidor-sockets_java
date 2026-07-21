@@ -24,7 +24,8 @@ public final class AutorRepository {
 
     public long contar(Connection connection) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement("SELECT COUNT(*) FROM autores"); ResultSet rs = ps.executeQuery()) {
-            rs.next(); return rs.getLong(1);
+            rs.next();
+            return rs.getLong(1);
         }
     }
 }

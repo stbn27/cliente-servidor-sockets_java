@@ -26,15 +26,15 @@ class SerializacionModelosTest {
 
         Noticia copia = copiar(original);
 
-        assertEquals(original.getId(), copia.getId());
-        assertEquals(original.getTitulo(), copia.getTitulo());
-        assertEquals(original.getContenido(), copia.getContenido());
-        assertEquals(original.getCategoria(), copia.getCategoria());
-        assertEquals(original.getAutorId(), copia.getAutorId());
-        assertEquals(original.getAutorNombre(), copia.getAutorNombre());
-        assertEquals(original.getFechaCreacion(), copia.getFechaCreacion());
-        assertEquals(original.getFechaModificacion(), copia.getFechaModificacion());
-        assertEquals(original.getVersion(), copia.getVersion());
+        assertEquals(original.id(), copia.id());
+        assertEquals(original.titulo(), copia.titulo());
+        assertEquals(original.contenido(), copia.contenido());
+        assertEquals(original.categoria(), copia.categoria());
+        assertEquals(original.autorId(), copia.autorId());
+        assertEquals(original.autorNombre(), copia.autorNombre());
+        assertEquals(original.fechaCreacion(), copia.fechaCreacion());
+        assertEquals(original.fechaModificacion(), copia.fechaModificacion());
+        assertEquals(original.version(), copia.version());
     }
 
     @Test
@@ -44,10 +44,10 @@ class SerializacionModelosTest {
                 Rol.REDACTOR, expiracion));
         EstadoServidor estado = copiar(new EstadoServidor(true, true, "Disponible", expiracion));
 
-        assertEquals("token", sesion.getToken());
-        assertEquals("Ada", sesion.getAutorNombre());
-        assertEquals(expiracion, sesion.getExpiraEn());
-        assertEquals(expiracion, estado.getInstanteServidor());
+        assertEquals("token", sesion.token());
+        assertEquals("Ada", sesion.autorNombre());
+        assertEquals(expiracion, sesion.expiraEn());
+        assertEquals(expiracion, estado.instanteServidor());
     }
 
     @Test
