@@ -1,4 +1,8 @@
 target/
+server/data/
+*.mv.db
+*.trace.db
+*.lock.db
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -37,3 +41,9 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+
+otros
+.agents
+.codex
+.mvn
