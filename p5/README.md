@@ -126,10 +126,6 @@ Estas credenciales son públicas e intencionalmente sencillas; solo deben usarse
 - No hay recuperación automática de una operación de escritura cuya respuesta se perdió; reintentar una publicación podría requerir comprobación del usuario.
 - La configuración de firewall y direccionamiento depende de la red donde se despliegue.
 
-## Posibles mejoras
-
-En un producto real serían razonables un pool de conexiones, migraciones versionadas, base externa replicada, métricas y trazas, autenticación federada, cifrado de transporte, paginación, búsqueda de texto completo, notificaciones y operaciones idempotentes. Estas mejoras se excluyen aquí para conservar el foco académico en RMI.
-
 ## Documentación adicional
 
 - [Arquitectura](docs/ARQUITECTURA.md)
