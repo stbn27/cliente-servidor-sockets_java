@@ -27,25 +27,12 @@ public record ServerConfig(String rmiHost, int registryPort, int objectPort,
     }
 
     /**
-     * Carga la configuración del servidor combinando tres fuentes con prioridad
-     * descendente: archivo {@code server.properties} embebido, variables de
-     * entorno del sistema operativo y argumentos de línea de comandos.
-     * <p>
-     * El orden de prioridad (de menor a mayor) es:
-     * <ol>
-     *   <li>Archivo {@code /server.properties} dentro del classpath</li>
-     *   <li>Variables de entorno (sobrescriben al archivo)</li>
-     *   <li>Argumentos {@code --clave=valor} (sobrescriben todo)</li>
-     * </ol>
+     * Carga la configuración exclusivamente desde el archivo
+     * {@code server.properties} embebido en el classpath.
      *
-     * @param args argumentos opcionales de línea de comandos en formato
-     *            {@code --clave=valor}; pueden ser {@code null}
-     * @return una instancia inmutable de {@link ServerConfig} con todos
-     *         los valores ya validados
-     * @throws IOException              si ocurre un error de lectura del
-     *                                  archivo {@code server.properties}
-     * @throws IllegalArgumentException si algún valor requerido falta, es
-     *                                  nulo, está en blanco o no es válido
+     * @return instancia inmutable de {@link ServerConfig} ya validada
+     * @throws IOException              si no se puede leer el archivo
+     * @throws IllegalArgumentException si falta algún valor o es inválido
      */
     public static ServerConfig load(String[] args) throws IOException {
         Properties p = new Properties();
@@ -55,37 +42,14 @@ public record ServerConfig(String rmiHost, int registryPort, int objectPort,
             if (in != null) p.load(in); // Solo carga si el archivo existe en el classpath
         }
 
-        Map<String, String> values = new HashMap<>();
-
-        // Convierte todas las propiedades a un Map<String,String> para manejo uniforme
-        p.forEach((k, v) -> values.put(k.toString(), v.toString()));
-
-        // Sobrescribe con variables de entorno del SO (si existen y no están vacías)
-        putEnv(values, "RMI_HOST", "rmi.host");
-        putEnv(values, "RMI_PORT", "rmi.port");
-        putEnv(values, "RMI_OBJECT_PORT", "rmi.object.port");
-        putEnv(values, "RMI_SERVICE", "rmi.service");
-        putEnv(values, "DATABASE_PATH", "database.path");
-        putEnv(values, "SESSION_TIMEOUT_MINUTES", "session.timeout.minutes");
-
-        // Recorre los argumentos de línea de comandos (máxima prioridad)
-        for (String arg : args == null ? new String[0] : args) {
-            // Solo procesa argumentos con formato --clave=valor
-            if (arg.startsWith("--") && arg.contains("=")) {
-                // Divide el argumento en clave (después de --) y valor (después de =)
-                int equals = arg.indexOf('=');
-                values.put(arg.substring(2, equals), arg.substring(equals + 1));
-            }
-        }
-
-        // Construye y valida el ServerConfig con los valores finales ya resueltos
+        // Construye el record leyendo cada propiedad directamente
         return new ServerConfig(
-                values.get("rmi.host"),
-                integer(values, "rmi.port"),
-                integer(values, "rmi.object.port"),
-                values.get("rmi.service"),
-                Path.of(values.get("database.path")),
-                Duration.ofMinutes(integer(values, "session.timeout.minutes"))
+                p.getProperty("rmi.host"),
+                Integer.parseInt(p.getProperty("rmi.port")),
+                Integer.parseInt(p.getProperty("rmi.object.port")),
+                p.getProperty("rmi.service"),
+                Path.of(p.getProperty("database.path")),
+                Duration.ofMinutes(Integer.parseInt(p.getProperty("session.timeout.minutes")))
         );
     }
 
